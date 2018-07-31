@@ -1,0 +1,21 @@
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+import matplotlib.pyplot as plt
+import numpy as np
+import tensorflow as tf
+
+Mat1 = tf.constant([[1,2],[3,4]])
+
+Mat2 = tf.constant([[1],[2]])
+
+Mat_res = tf.matmul(Mat1,Mat2)
+
+
+# method 1
+#sess = tf.Session()
+#print(sess.run(Mat_res))
+#sess.close()
+
+
+with tf.Session() as sess:
+	print(sess.run(Mat_res))

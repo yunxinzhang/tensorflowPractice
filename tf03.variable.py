@@ -1,0 +1,38 @@
+# -*- coding: UTF-8 -*-
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+import tensorflow as tf
+
+
+def mul_wX(w,X):
+	return tf.matmul(w,X)
+
+def train(X):
+	with tf.variable_scope("model", reuse = tf.AUTO_REUSE):
+		w = tf.get_variable("weight", 
+							shape=(1,2),
+							initializer=tf.truncated_normal_initializer(),
+							trainable=True)
+	res = []
+	for _ in range(5):
+		res.append(mul_wX(w,X))
+		w = tf.add(w,1)
+	return res
+
+with tf.Session() as sess:
+	res = train(tf.constant([[1,2,3],[2,4,6.0]]))
+	tf.global_variables_initializer().run() # initialize variables
+	for _ in res:
+		print(_.eval())  # eval() == sess.run()
+
+##############################
+# tf.placeholer
+
+x = tf.placeholder(tf.float32, None)
+y = 4 * x
+
+print(x)
+
+with tf.Session() as sess:
+	print(sess.run(y, feed_dict={x:[1,2,3,4]}))
+
